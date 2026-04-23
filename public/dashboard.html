@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — TMS Vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    /* Dashboard-specific styles — all colors via existing tokens, no duplication */
+
+    /* ── Welcome ──────────────────────────────────────────────── */
+    .dash-welcome {
+      text-align: center;
+      padding: 56px 24px 40px;
+    }
+    .dash-welcome-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .dash-welcome-sub {
+      font-size: clamp(14px, 2vw, 16px);
+      color: var(--text-muted);
+      line-height: 1.65;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── Hero card ────────────────────────────────────────────── */
+    .dash-hero-wrap {
+      padding: 0 24px 52px;
+    }
+    .dash-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .dash-hero-card {
+      display: flex;
+      height: 320px;
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.32);
+    }
+
+    /* Left: image panel with right-edge fade */
+    .dash-hero-img {
+      position: relative;
+      flex: 0 0 45%;
+      overflow: hidden;
+    }
+    .dash-hero-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .dash-hero-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 40%, var(--navy-light) 100%);
+      pointer-events: none;
+    }
+
+    /* Right: content panel */
+    .dash-hero-content {
+      flex: 1;
+      background: var(--navy-light);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 44px;
+    }
+    .dash-hero-label {
+      font-variant: small-caps;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .dash-hero-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+    .dash-hero-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.68;
+      margin-bottom: 26px;
+    }
+    .dash-hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 22px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      transition: background 0.15s, transform 0.12s;
+      align-self: flex-start;
+      letter-spacing: 0.01em;
+    }
+    .dash-hero-btn:hover {
+      background: var(--gold-hover);
+      transform: translateY(-1px);
+    }
+    .dash-hero-btn svg { transition: transform 0.15s; }
+    .dash-hero-btn:hover svg { transform: translateX(3px); }
+
+    /* ── Example questions band ───────────────────────────────── */
+    .dash-questions {
+      background: #142548;
+      padding: 40px 24px;
+    }
+    .dash-questions-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .dash-questions-label {
+      font-variant: small-caps;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .dash-questions-row {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .dash-questions-row::-webkit-scrollbar { display: none; }
+    .dash-q-card {
+      flex: 1 0 220px;
+      border: 1px solid rgba(201, 168, 76, 0.28);
+      border-radius: var(--radius-md);
+      padding: 20px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .dash-q-card:hover {
+      border-color: var(--gold);
+      background: rgba(201, 168, 76, 0.05);
+    }
+    .dash-q-text {
+      font-size: 13.5px;
+      color: var(--cream);
+      line-height: 1.55;
+    }
+    .dash-q-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      transition: gap 0.15s;
+    }
+    .dash-q-card:hover .dash-q-link { gap: 7px; }
+
+    /* ── Resources section ────────────────────────────────────── */
+    .dash-resources {
+      padding: 60px 24px 76px;
+    }
+    .dash-resources-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .dash-resources-hdr {
+      margin-bottom: 36px;
+    }
+    .dash-resources-title {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+    .dash-resources-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .dash-card {
+      background: #243A6B;
+      border: 1px solid rgba(201, 168, 76, 0.28);
+      border-radius: var(--radius-md);
+      padding: 28px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .dash-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+    }
+    .dash-card-icon {
+      color: var(--gold);
+      margin-bottom: 2px;
+      flex-shrink: 0;
+    }
+    .dash-card-title {
+      font-family: var(--font-serif);
+      font-size: 16.5px;
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.3;
+    }
+    .dash-card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .dash-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold);
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      border-radius: var(--radius-sm);
+      padding: 7px 14px;
+      text-decoration: none;
+      align-self: flex-start;
+      margin-top: 4px;
+      letter-spacing: 0.02em;
+      transition: background 0.15s, border-color 0.15s, gap 0.15s;
+    }
+    .dash-card-btn:hover {
+      background: var(--gold-muted);
+      border-color: var(--gold);
+      gap: 8px;
+    }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .dash-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      /* Hero stacks vertically */
+      .dash-hero-card {
+        flex-direction: column;
+        height: auto;
+      }
+      .dash-hero-img {
+        flex: none;
+        height: 200px;
+      }
+      .dash-hero-img::after {
+        background: linear-gradient(to bottom, transparent 40%, var(--navy-light) 100%);
+      }
+      .dash-hero-content { padding: 28px 22px 32px; }
+
+      /* Single-column resources */
+      .dash-grid { grid-template-columns: 1fr; }
+
+      /* Tighter spacing */
+      .dash-welcome { padding: 36px 20px 28px; }
+      .dash-hero-wrap { padding: 0 16px 40px; }
+      .dash-questions { padding: 32px 20px; }
+      .dash-resources { padding: 44px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Utility Bar ──────────────────────────────────────────── -->
+  <div class="utility-bar">
+    <span class="utility-text">
+      <span class="utility-dot" aria-hidden="true"></span>
+      The Operations Partner Bundle
+      <span class="utility-dot" aria-hidden="true"></span>
+      Member Library
+    </span>
+  </div>
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <div class="brand-lockup">
+        <img src="/images/tms-vault-logo.png" alt="TMS Solutions" class="brand-logo" />
+      </div>
+
+      <div class="member-chip" id="memberChip" role="button"
+           aria-haspopup="true" aria-expanded="false" tabindex="0">
+        <div class="member-avatar">J</div>
+        <div class="member-info">
+          <span class="member-name">James Callahan</span>
+          <span class="member-badge">MEMBER</span>
+        </div>
+        <svg class="member-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="member-dropdown" id="memberDropdown" role="menu">
+          <a href="#" class="dropdown-item" role="menuitem">My Account</a>
+          <a href="#" class="dropdown-item" role="menuitem">Saved Resources</a>
+          <a href="/login" class="dropdown-item dropdown-item--danger" role="menuitem">Log Out</a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── Welcome ─────────────────────────────────────────────── -->
+  <section class="dash-welcome">
+    <h1 class="dash-welcome-headline">Welcome to the <em style="font-style:italic;color:var(--gold);">TMS Solutions Vault.</em></h1>
+    <p class="dash-welcome-sub">Your intelligence briefing is ready &mdash; resources updated weekly.</p>
+  </section>
+
+  <!-- ── Hero card ───────────────────────────────────────────── -->
+  <section class="dash-hero-wrap" aria-label="Vault search">
+    <div class="dash-hero-inner">
+      <div class="dash-hero-card">
+
+        <div class="dash-hero-img">
+          <img src="/images/vault-hero.jpg" alt="TMS Vault" />
+        </div>
+
+        <div class="dash-hero-content">
+          <div class="dash-hero-label">The TMS Solutions Vault</div>
+          <h2 class="dash-hero-headline">Unlock Every Resource In One Search</h2>
+          <p class="dash-hero-body">
+            Type your situation &mdash; health coverage, funding, local programs,
+            cost savings &mdash; and get an instant personalized answer in seconds.
+          </p>
+          <a href="/" class="dash-hero-btn">
+            Search the Vault Now
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Example questions ───────────────────────────────────── -->
+  <section class="dash-questions" aria-label="Example questions">
+    <div class="dash-questions-inner">
+      <div class="dash-questions-label">Try Asking Questions Like</div>
+      <div class="dash-questions-row">
+
+        <div class="dash-q-card">
+          <p class="dash-q-text">What health insurance savings strategies are available for small business owners?</p>
+          <a href="/?q=health+insurance+savings+strategies" class="dash-q-link">Ask Vault <span aria-hidden="true">&#8594;</span></a>
+        </div>
+
+        <div class="dash-q-card">
+          <p class="dash-q-text">What grants or funding programs are available for my business right now?</p>
+          <a href="/?q=grants+and+funding+programs" class="dash-q-link">Ask Vault <span aria-hidden="true">&#8594;</span></a>
+        </div>
+
+        <div class="dash-q-card">
+          <p class="dash-q-text">How do I cut my monthly overhead without cutting corners?</p>
+          <a href="/?q=cut+monthly+overhead" class="dash-q-link">Ask Vault <span aria-hidden="true">&#8594;</span></a>
+        </div>
+
+        <div class="dash-q-card">
+          <p class="dash-q-text">What AI tools can help me run my business more efficiently?</p>
+          <a href="/?q=AI+tools+for+business" class="dash-q-link">Ask Vault <span aria-hidden="true">&#8594;</span></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Vault Resources ─────────────────────────────────────── -->
+  <section class="dash-resources" aria-label="Vault resources">
+    <div class="dash-resources-inner">
+
+      <div class="dash-resources-hdr">
+        <h2 class="dash-resources-title">Your Vault Resources</h2>
+        <p class="dash-resources-sub">Everything included in your membership &mdash; explore by category.</p>
+      </div>
+
+      <div class="dash-grid">
+
+        <!-- 1 · Overhead Optimizer -->
+        <div class="dash-card">
+          <svg class="dash-card-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M16 3L29 9.5V18C29 24.8 23.1 30.3 16 31C8.9 30.3 3 24.8 3 18V9.5L16 3Z"
+                  stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M11 16.5l3.5 3.5 7-7.5"
+                  stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="dash-card-title">Overhead Optimizer</div>
+          <p class="dash-card-desc">Buying groups, health coverage, payment processing, and overhead savings.</p>
+          <a href="/overhead-optimizer" class="dash-card-btn">Explore &#8594;</a>
+        </div>
+
+        <!-- 2 · Revenue Maximizer -->
+        <div class="dash-card">
+          <svg class="dash-card-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <polyline points="3,25 11,15 17,19 27,8"
+                      stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="21,8 27,8 27,14"
+                      stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="3" y1="29" x2="29" y2="29"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="dash-card-title">Revenue Maximizer</div>
+          <p class="dash-card-desc">SBA loans, grants, local funding programs, and capital access.</p>
+          <a href="/revenue-maximizer" class="dash-card-btn">Explore &#8594;</a>
+        </div>
+
+        <!-- 3 · AI Strategy & Implementation -->
+        <div class="dash-card">
+          <svg class="dash-card-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="9" y="9" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="16" cy="16" r="3" stroke="currentColor" stroke-width="1.3"/>
+            <line x1="16" y1="2"  x2="16" y2="7"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="16" y1="25" x2="16" y2="30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="2"  y1="16" x2="7"  y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="25" y1="16" x2="30" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="5.5"  y1="5.5"  x2="9"  y2="9"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="23"   y1="23"   x2="26.5" y2="26.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="26.5" y1="5.5"  x2="23" y2="9"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="9"    y1="23"   x2="5.5" y2="26.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="dash-card-title">AI Strategy &amp; Implementation</div>
+          <p class="dash-card-desc">AI tools, automation strategies, and your competitive edge.</p>
+          <a href="/ai-strategy" class="dash-card-btn">Explore &#8594;</a>
+        </div>
+
+        <!-- 4 · Operational Efficiency -->
+        <div class="dash-card">
+          <svg class="dash-card-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="16" cy="16" r="11" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3.5 4"/>
+            <line x1="16" y1="2"  x2="16" y2="6"  stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="16" y1="26" x2="16" y2="30" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="2"  y1="16" x2="6"  y2="16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="26" y1="16" x2="30" y2="16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <div class="dash-card-title">Operational Efficiency</div>
+          <p class="dash-card-desc">HR, payroll, legal resources, compliance, and business training.</p>
+          <a href="/operational-efficiency" class="dash-card-btn">Explore &#8594;</a>
+        </div>
+
+        <!-- 5 · Digital Marketing & Growth -->
+        <div class="dash-card">
+          <svg class="dash-card-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M4 11h15l5-5v20l-5-5H4V11Z"
+                  stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <line x1="4" y1="18" x2="4" y2="25"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M27 13c2.5 1 2.5 7 0 8"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M29.5 10c4 3 4 12 0 14"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="dash-card-title">Digital Marketing &amp; Growth</div>
+          <p class="dash-card-desc">Google Business, reputation management, social media, and local visibility.</p>
+          <a href="/digital-marketing" class="dash-card-btn">Explore &#8594;</a>
+        </div>
+
+        <!-- 6 · Weekly Vault Updates -->
+        <div class="dash-card">
+          <svg class="dash-card-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="4" y="7" width="24" height="21" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="4"  y1="13" x2="28" y2="13" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="11" y1="4"  x2="11" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="21" y1="4"  x2="21" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M13 22c0-1.66 1.34-3 3-3s3 1.34 3 3"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M20 20.5l1.5-1.5M12 20.5l-1.5-1.5"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="dash-card-title">Weekly Vault Updates</div>
+          <p class="dash-card-desc">Fresh programs and opportunities added every week.</p>
+          <a href="/" class="dash-card-btn">Explore &#8594;</a>
+        </div>
+
+        <!-- 7 · Business Tools -->
+        <div class="dash-card">
+          <svg class="dash-card-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="7" y="4" width="18" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="11" y1="11" x2="21" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="11" y1="15" x2="21" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="11" y1="19" x2="17" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="11" y1="23" x2="15" y2="23" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="dash-card-title">Business Tools</div>
+          <p class="dash-card-desc">Calculators and audit tools built exclusively for TMS members.</p>
+          <a href="/tools" class="dash-card-btn">Explore &#8594;</a>
+        </div>
+
+        <!-- 8 · Business Resource Library -->
+        <div class="dash-card">
+          <svg class="dash-card-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M7 28V8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v20"
+                  stroke="currentColor" stroke-width="1.5"/>
+            <line x1="7"  y1="28" x2="25" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="11" y1="8"  x2="11" y2="28" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="15" y1="11" x2="22" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="15" x2="22" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="19" x2="20" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="dash-card-title">Business Resource Library</div>
+          <p class="dash-card-desc">Professionally researched guides and resources, downloadable instantly.</p>
+          <a href="https://tms-guides.onrender.com" class="dash-card-btn" target="_blank" rel="noopener noreferrer">Explore &#8594;</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ──────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 TMS Solutions Group</div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#" class="footer-link">Support</a>
+        <a href="#" class="footer-link">Contact</a>
+        <a href="/login" class="footer-link">Log Out</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    // Member chip dropdown
+    const chip     = document.getElementById('memberChip');
+    const dropdown = document.getElementById('memberDropdown');
+
+    function openDropdown() {
+      chip.setAttribute('aria-expanded', 'true');
+      dropdown.classList.add('open');
+    }
+    function closeDropdown() {
+      chip.setAttribute('aria-expanded', 'false');
+      dropdown.classList.remove('open');
+    }
+
+    chip.addEventListener('click', () => {
+      chip.getAttribute('aria-expanded') === 'true' ? closeDropdown() : openDropdown();
+    });
+    chip.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+      if (e.key === 'Escape') closeDropdown();
+    });
+    document.addEventListener('click', (e) => {
+      if (!chip.contains(e.target)) closeDropdown();
+    });
+  </script>
+
+</body>
+</html>
