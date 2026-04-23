@@ -1,13 +1,13 @@
 /* ── Design Tokens ─────────────────────────────────────────── */
 :root {
-  --navy:       #0F1E3D;
-  --navy-light: #162548;
+  --navy:       #1A2F5C;
+  --navy-light: #213868;
   --cream:      #FAF6EE;
   --cream-dim:  #EDE8DC;
   --gold:       #C9A84C;
   --gold-hover: #B8943A;
   --gold-muted: rgba(201, 168, 76, 0.25);
-  --text-navy:  #0F1E3D;
+  --text-navy:  #1A2F5C;
   --text-cream: #FAF6EE;
   --text-muted: rgba(250, 246, 238, 0.6);
 
@@ -40,17 +40,31 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* ── Utility Bar ───────────────────────────────────────────── */
 .utility-bar {
   background: var(--cream);
-  padding: 6px 24px;
-  text-align: center;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
 }
 .utility-text {
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--navy);
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.utility-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
 }
 
 /* ── Header ────────────────────────────────────────────────── */
@@ -78,7 +92,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   align-items: center;
   gap: 12px;
 }
-.brand-shield { flex-shrink: 0; }
+.brand-logo {
+  height: 48px;
+  width: auto;
+  margin-right: 4px;
+  flex-shrink: 0;
+  display: block;
+}
 .brand-text { display: flex; flex-direction: column; }
 .brand-title {
   font-family: var(--font-serif);
@@ -315,7 +335,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .pill-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
   gap: 10px;
@@ -445,13 +465,26 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .footer-link:hover { color: var(--gold); }
 
+/* ── Login page button ─────────────────────────────────────── */
+/* Higher specificity (button.login-btn) ensures these rules win over the
+   login.html <style> block so the button always shows clean, opaque gold. */
+button.login-btn {
+  background: var(--gold);
+}
+button.login-btn:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+  color: rgba(26, 47, 92, 0.5); /* dim text only — background stays gold */
+}
+
 /* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .hero { padding: 48px 16px 60px; }
   .results-card { padding: 24px 20px; }
-  .pill-row { gap: 8px; }
+  .pill-row { flex-wrap: wrap; gap: 8px; }
   .pill-dot { display: none; }
   .member-info { display: none; }
+  .brand-logo { height: 36px; }
   .brand-subtitle { display: none; }
   .utility-text { font-size: 9px; letter-spacing: 0.08em; }
   .footer-inner { flex-direction: column; text-align: center; gap: 8px; }

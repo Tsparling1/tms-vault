@@ -2,7 +2,7 @@
 
 // ── Member state (populated from Supabase session or stub) ──
 const member = {
-  name: window.__MEMBER_NAME__ || 'Member',
+  name: window.__MEMBER_NAME__ || 'Marcus Delgado',
   businessType: window.__MEMBER_BUSINESS_TYPE__ || null
 };
 

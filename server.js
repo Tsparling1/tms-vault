@@ -7,7 +7,7 @@ const path = require('path');
 const { handleSearch } = require('./src/search');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3099;
 
 // ── Middleware ──────────────────────────────────────────────────────────────
 
@@ -61,6 +61,20 @@ app.post('/api/search', searchLimiter, async (req, res) => {
 });
 
 /**
+ * POST /api/login-request
+ * Body: { email: string }
+ * Returns: { success: true }
+ */
+app.post('/api/login-request', (req, res) => {
+  const { email } = req.body;
+  if (!email || typeof email !== 'string' || !email.trim()) {
+    return res.status(400).json({ error: 'Email is required.' });
+  }
+  // Stub — magic link delivery will be wired here
+  res.json({ success: true });
+});
+
+/**
  * GET /api/health
  */
 app.get('/api/health', (req, res) => {
@@ -71,6 +85,12 @@ app.get('/api/health', (req, res) => {
     openai: !!process.env.OPENAI_API_KEY,
     supabase: !!process.env.SUPABASE_URL
   });
+});
+
+// ── Page routes ─────────────────────────────────────────────────────────────
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 // ── Catchall — serve frontend ───────────────────────────────────────────────

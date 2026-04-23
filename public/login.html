@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — TMS Vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    /* Login-specific vars — extends existing tokens from styles.css */
+    :root {
+      --navy-card:   #223A6E;
+      --cream-muted: rgba(250, 246, 238, 0.62);
+      --cream-dim:   rgba(250, 246, 238, 0.42);
+      --gold-line:   rgba(201, 168, 76, 0.22);
+    }
+
+    /* Override body to remove flex-column layout from main stylesheet */
+    body {
+      display: block;
+      min-height: 100vh;
+    }
+
+    .login-page {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* Ambient gold glow behind the card */
+    .login-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 900px;
+      height: 900px;
+      max-width: 120vw;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at center,
+        rgba(201, 168, 76, 0.18) 0%,
+        rgba(201, 168, 76, 0.10) 22%,
+        rgba(201, 168, 76, 0) 62%
+      );
+      filter: blur(10px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .login-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.35) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .login-main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 24px;
+    }
+
+    /* Card */
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--navy-card);
+      border: 1px solid var(--gold-line);
+      border-radius: 14px;
+      padding: 32px 40px 36px;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.04) inset,
+        0 30px 60px -20px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Logo */
+    .login-logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin: -4px 0 10px;
+    }
+    .login-logo {
+      height: 150px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* Tagline */
+    .login-tagline {
+      text-align: center;
+      font-family: var(--font-sans);
+      font-variant: small-caps;
+      font-size: 12.5px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      margin: 0 0 22px;
+    }
+
+    /* Form section */
+    .login-h1 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: 34px;
+      line-height: 1.15;
+      text-align: center;
+      color: var(--cream);
+      margin: 0 0 10px;
+      letter-spacing: -0.005em;
+    }
+
+    .login-subtitle {
+      text-align: center;
+      color: var(--cream-muted);
+      font-size: 14.5px;
+      margin: 0 0 28px;
+      letter-spacing: 0.005em;
+    }
+
+    .login-field-label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+      margin: 0 0 8px 2px;
+    }
+
+    .login-input {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px;
+      background: var(--cream);
+      color: var(--navy);
+      border: 1px solid transparent;
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      outline: none;
+      transition: box-shadow 180ms ease, border-color 180ms ease;
+    }
+    .login-input::placeholder { color: rgba(26, 47, 92, 0.45); }
+    .login-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.22);
+    }
+    .login-input.invalid {
+      border-color: #C96A4C;
+      box-shadow: 0 0 0 3px rgba(201, 106, 76, 0.22);
+    }
+
+    .login-hint {
+      min-height: 18px;
+      margin: 8px 2px 0;
+      font-size: 12.5px;
+      color: var(--cream-dim);
+      letter-spacing: 0.005em;
+    }
+    .login-hint.error { color: #E79B80; }
+
+    .login-btn {
+      margin-top: 18px;
+      width: 100%;
+      height: 50px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 180ms ease, transform 120ms ease, box-shadow 180ms ease, opacity 180ms ease;
+    }
+    .login-btn:hover:not(:disabled) {
+      background: var(--gold-hover);
+      box-shadow: 0 8px 24px -8px rgba(201, 168, 76, 0.55);
+    }
+    .login-btn:active:not(:disabled) { transform: translateY(1px); }
+    .login-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .btn-arrow {
+      transition: transform 200ms ease;
+      flex-shrink: 0;
+    }
+    .login-btn:hover:not(:disabled) .btn-arrow { transform: translateX(3px); }
+
+    .login-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(26, 47, 92, 0.3);
+      border-top-color: var(--navy);
+      border-radius: 50%;
+      animation: login-spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes login-spin { to { transform: rotate(360deg); } }
+
+    /* Success section */
+    .login-success {
+      animation: login-fadeUp 380ms cubic-bezier(.2,.7,.2,1) both;
+    }
+    @keyframes login-fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-success-h {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: 28px;
+      line-height: 1.2;
+      text-align: center;
+      color: var(--cream);
+      margin: 0 0 12px;
+    }
+
+    .login-success-p {
+      text-align: center;
+      color: var(--cream-muted);
+      font-size: 14.5px;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .login-success-email {
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    /* Footer */
+    .login-footer {
+      position: relative;
+      z-index: 1;
+      padding: 24px 40px;
+      border-top: 1px solid rgba(250, 246, 238, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: rgba(250, 246, 238, 0.45);
+      letter-spacing: 0.01em;
+    }
+    .login-footer a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+    .login-footer a:hover { color: var(--cream); }
+    .login-footer-right { display: flex; gap: 14px; align-items: center; }
+
+    @media (max-width: 560px) {
+      .login-main { padding: 40px 18px; }
+      .login-card { padding: 34px 24px 28px; border-radius: 12px; }
+      .login-footer {
+        padding: 18px 22px;
+        font-size: 11.5px;
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-page">
+  <div class="login-glow" aria-hidden="true"></div>
+  <div class="login-vignette" aria-hidden="true"></div>
+
+  <main class="login-main">
+    <div class="login-card">
+
+      <!-- Always visible: logo + tagline -->
+      <div class="login-logo-wrap">
+        <img src="/images/tms-vault-logo.png" alt="TMS Solutions" class="login-logo" />
+      </div>
+      <div class="login-tagline">The TMS Solutions Vault</div>
+
+      <!-- Form section -->
+      <div id="loginForm">
+        <h1 class="login-h1">Welcome back.</h1>
+        <p class="login-subtitle">Enter your email to access The Vault.</p>
+        <form id="emailForm" novalidate>
+          <label class="login-field-label" for="emailInput">Email</label>
+          <input
+            id="emailInput"
+            class="login-input"
+            type="email"
+            autocomplete="email"
+            autofocus
+            placeholder="your@email.com"
+            spellcheck="false"
+          />
+          <div class="login-hint" id="hintText">We'll send a secure link — no password required.</div>
+          <button class="login-btn" type="submit" id="submitBtn" disabled>
+            <span id="btnLabel">Send me a login link</span>
+            <svg class="btn-arrow" id="btnArrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Success section (hidden until submission) -->
+      <div id="successSection" style="display:none" class="login-success">
+        <h2 class="login-success-h">Check your email.</h2>
+        <p class="login-success-p">We sent a login link to <span class="login-success-email" id="emailEcho"></span></p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="login-footer">
+    <div>&copy; 2026 TMS Solutions Group</div>
+    <div class="login-footer-right">
+      <a href="#support">Support</a>
+      <span aria-hidden="true">&middot;</span>
+      <a href="#contact">Contact</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+  const emailInput = document.getElementById('emailInput');
+  const submitBtn  = document.getElementById('submitBtn');
+  const btnLabel   = document.getElementById('btnLabel');
+  const btnArrow   = document.getElementById('btnArrow');
+  const hintText   = document.getElementById('hintText');
+  const emailForm  = document.getElementById('emailForm');
+  const loginForm  = document.getElementById('loginForm');
+  const successSection = document.getElementById('successSection');
+  const emailEcho  = document.getElementById('emailEcho');
+
+  function isValidEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+  }
+
+  function setHint(msg, isError) {
+    hintText.textContent = msg;
+    hintText.className = 'login-hint' + (isError ? ' error' : '');
+  }
+
+  emailInput.addEventListener('input', () => {
+    const val = emailInput.value;
+    submitBtn.disabled = val.length === 0;
+    emailInput.classList.remove('invalid');
+    setHint("We'll send a secure link — no password required.", false);
+  });
+
+  emailInput.addEventListener('blur', () => {
+    const val = emailInput.value;
+    if (val && !isValidEmail(val)) {
+      emailInput.classList.add('invalid');
+      setHint("That doesn't look like a valid email.", true);
+    }
+  });
+
+  emailForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+
+    if (!email) {
+      setHint('Enter the email on your membership.', true);
+      return;
+    }
+    if (!isValidEmail(email)) {
+      emailInput.classList.add('invalid');
+      setHint("That doesn't look like a valid email.", true);
+      return;
+    }
+
+    // Loading state
+    submitBtn.disabled = true;
+    btnLabel.textContent = 'Sending link\u2026';
+    btnArrow.style.display = 'none';
+    const spinner = document.createElement('span');
+    spinner.className = 'login-spinner';
+    spinner.setAttribute('aria-hidden', 'true');
+    submitBtn.prepend(spinner);
+
+    try {
+      const res = await fetch('/api/login-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Something went wrong. Please try again.');
+      }
+
+      // Success — swap sections, keep logo + tagline visible
+      emailEcho.textContent = email;
+      loginForm.style.display = 'none';
+      successSection.style.display = 'block';
+    } catch (err) {
+      // Restore form on error
+      spinner.remove();
+      btnLabel.textContent = 'Send me a login link';
+      btnArrow.style.display = '';
+      submitBtn.disabled = false;
+      setHint(err.message, true);
+    }
+  });
+</script>
+
+</body>
+</html>
