@@ -105,6 +105,10 @@ app.get('/revenue-maximizer', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'revenue-maximizer.html'));
 });
 
+app.get('/ai-strategy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'ai-strategy.html'));
+});
+
 // ── Catchall — serve frontend ───────────────────────────────────────────────
 app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
