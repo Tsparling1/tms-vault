@@ -117,6 +117,10 @@ app.get('/digital-marketing', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'digital-marketing.html'));
 });
 
+app.get('/tools', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'tools.html'));
+});
+
 // ── Catchall — serve frontend ───────────────────────────────────────────────
 app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

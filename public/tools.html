@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Tools — TMS Vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    /* Business Tools — page-specific. All base tokens from styles.css. */
+
+    /* Cream page, navy ink */
+    body { background: #FAF6EE; color: #1A2F5C; }
+
+    /* Utility bar */
+    .bt-utility.utility-bar { background: #15264A; }
+    .bt-utility .utility-text { color: rgba(250,246,238,0.9); }
+
+    /* ── Breadcrumb ───────────────────────────────────────────── */
+    .bt-breadcrumb {
+      background: #FAF6EE;
+      padding: 22px 64px 0;
+    }
+    .bt-breadcrumb-inner { max-width: 1280px; margin: 0 auto; }
+    .bt-back {
+      font-size: 12.5px;
+      letter-spacing: 0.05em;
+      color: #B8962F;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.15s;
+    }
+    .bt-back:hover { color: #1A2F5C; }
+
+    /* ── Hero text ────────────────────────────────────────────── */
+    .bt-hero {
+      padding: 56px 64px 0;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .bt-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #B8962F;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .bt-h1 {
+      font-family: var(--font-serif);
+      font-size: 76px;
+      font-weight: 400;
+      line-height: 1.05;
+      color: #1A2F5C;
+      margin: 0 0 24px;
+    }
+    .bt-h1 em { font-style: italic; }
+    .bt-sub {
+      font-family: var(--font-sans);
+      font-size: 20px;
+      color: #5A6B8A;
+      max-width: 760px;
+      line-height: 1.6;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    /* ── Hero image ───────────────────────────────────────────── */
+    .bt-hero-img-outer {
+      padding: 40px 64px 0;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .bt-hero-img-wrap {
+      height: 460px;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #0a1428;
+    }
+    .bt-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Card grid ────────────────────────────────────────────── */
+    .bt-grid-outer {
+      padding: 88px 64px 112px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .bt-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .bt-card {
+      background: #FAF6EE;
+      border: 1px solid rgba(201, 168, 76, 0.33);
+      border-radius: 10px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+    }
+    .bt-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background: rgba(201, 168, 76, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-bottom: 20px;
+    }
+    .bt-icon-box svg {
+      width: 28px;
+      height: 28px;
+    }
+    .bt-card-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 400;
+      color: #1A2F5C;
+      line-height: 1.25;
+      margin: 0 0 12px;
+    }
+    .bt-card-desc {
+      font-family: var(--font-sans);
+      font-size: 14.5px;
+      color: #5A6B8A;
+      line-height: 1.6;
+      margin: 0 0 auto;
+      padding-bottom: 24px;
+    }
+    .bt-card-btn {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #C9A84C;
+      background: transparent;
+      border: 1.5px solid #C9A84C;
+      border-radius: 4px;
+      padding: 12px 20px;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: background 0.15s, color 0.15s;
+      align-self: flex-start;
+    }
+    .bt-card-btn:hover {
+      background: #C9A84C;
+      color: #FAF6EE;
+    }
+
+    /* ── CTA band ─────────────────────────────────────────────── */
+    .bt-cta {
+      background: #1A2F5C;
+      padding: 96px 64px;
+      text-align: center;
+    }
+    .bt-cta-inner { max-width: 680px; margin: 0 auto; }
+    .bt-cta-h2 {
+      font-family: var(--font-serif);
+      font-size: 52px;
+      font-weight: 400;
+      color: #FAF6EE;
+      line-height: 1.1;
+      margin: 0 0 18px;
+    }
+    .bt-cta-h2 em { font-style: italic; color: #C9A84C; }
+    .bt-cta-sub {
+      font-family: var(--font-sans);
+      font-size: 17px;
+      color: rgba(250, 246, 238, 0.75);
+      line-height: 1.65;
+      margin: 0 0 36px;
+    }
+    .bt-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #1A2F5C;
+      background: #C9A84C;
+      border-radius: 4px;
+      padding: 17px 32px;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .bt-cta-btn:hover { background: #B8943A; }
+    .bt-cta-note {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: rgba(250, 246, 238, 0.45);
+      margin-top: 20px;
+    }
+
+    /* ── Secondary links ──────────────────────────────────────── */
+    .bt-secondary {
+      background: #F4EEDF;
+      padding: 28px 64px;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: #5A6B8A;
+      letter-spacing: 0.02em;
+    }
+    .bt-secondary-link {
+      color: #B8962F;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .bt-secondary-link:hover { color: #1A2F5C; }
+    .bt-secondary-sep { margin: 0 12px; opacity: 0.4; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .bt-breadcrumb,
+      .bt-hero,
+      .bt-hero-img-outer,
+      .bt-grid-outer,
+      .bt-cta,
+      .bt-secondary { padding-left: 40px; padding-right: 40px; }
+      .bt-h1 { font-size: 60px; }
+      .bt-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 680px) {
+      .bt-breadcrumb,
+      .bt-hero,
+      .bt-hero-img-outer,
+      .bt-grid-outer,
+      .bt-cta,
+      .bt-secondary { padding-left: 20px; padding-right: 20px; }
+      .bt-h1 { font-size: 42px; }
+      .bt-sub { font-size: 16px; }
+      .bt-grid { grid-template-columns: 1fr; }
+      .bt-hero-img-wrap { height: 240px; }
+      .bt-cta-h2 { font-size: 36px; }
+      .bt-cta-sub { font-size: 15px; }
+      .bt-secondary { font-size: 12px; line-height: 2; }
+      .bt-secondary-sep { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Utility Bar ─────────────────────────────────────────── -->
+  <div class="utility-bar bt-utility">
+    <span class="utility-text">
+      <span class="utility-dot" aria-hidden="true"></span>
+      The Operations Partner Bundle
+      <span class="utility-dot" aria-hidden="true"></span>
+      Member Library
+    </span>
+  </div>
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <div class="brand-lockup">
+        <img src="/images/tms-vault-logo.png" alt="TMS Solutions" class="brand-logo" />
+      </div>
+
+      <div class="member-chip" id="memberChip" role="button"
+           aria-haspopup="true" aria-expanded="false" tabindex="0">
+        <div class="member-avatar">J</div>
+        <div class="member-info">
+          <span class="member-name">James Callahan</span>
+          <span class="member-badge">MEMBER</span>
+        </div>
+        <svg class="member-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="member-dropdown" id="memberDropdown" role="menu">
+          <a href="#" class="dropdown-item" role="menuitem">My Account</a>
+          <a href="/dashboard" class="dropdown-item" role="menuitem">Dashboard</a>
+          <a href="/login" class="dropdown-item dropdown-item--danger" role="menuitem">Log Out</a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── Breadcrumb ─────────────────────────────────────────── -->
+  <nav class="bt-breadcrumb" aria-label="Breadcrumb">
+    <div class="bt-breadcrumb-inner">
+      <a href="/dashboard" class="bt-back">&larr; Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <div class="bt-hero">
+    <div class="bt-eyebrow">Business Tools</div>
+    <h1 class="bt-h1">Run <em>the numbers.</em></h1>
+    <p class="bt-sub">Every tool below runs a real calculation on your real business — and delivers a PDF you can act on. No fluff, no follow-up pitch.</p>
+  </div>
+
+  <!-- Hero image -->
+  <div class="bt-hero-img-outer">
+    <div class="bt-hero-img-wrap">
+      <img src="/images/tools-hero.png" alt="Business professional reviewing financial data and metrics" class="bt-hero-img" />
+    </div>
+  </div>
+
+  <!-- ── Tool Cards ─────────────────────────────────────────── -->
+  <div class="bt-grid-outer">
+    <div class="bt-grid">
+
+      <!-- 1 · Cash Flow Health Check -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20 L10 14 L14 17 L24 7" />
+            <path d="M19 7 L24 7 L24 12" />
+            <circle cx="14" cy="22" r="1" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Cash Flow Health Check</h3>
+        <p class="bt-card-desc">21 questions across 6 areas reveal exactly where your cash flow is strong, weak, and leaking. Get a GREEN/YELLOW/RED risk score with a PDF action plan.</p>
+        <a href="/cashflow-health-check" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 2 · Business Savings Report -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 4 V24" />
+            <path d="M18.5 8 H11.5 a3 3 0 0 0 0 6 h5 a3 3 0 0 1 0 6 H9" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Business Savings Report</h3>
+        <p class="bt-card-desc">A 12-section audit that finds money your business is leaving on the table. Get a personalized PDF showing your top savings opportunities with real dollar ranges.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 3 · Time & Automation Discovery Audit -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="14" cy="14" r="9" />
+            <path d="M14 9 V14 L17.5 16" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Time &amp; Automation Discovery Audit</h3>
+        <p class="bt-card-desc">25 questions pinpoint exactly where your business is losing hours to manual work. Get a PDF report showing your top automation opportunities.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 4 · Health Share vs ACA Comparison -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 23 C7 18 4 14 4 10 a5 5 0 0 1 10 -1 a5 5 0 0 1 10 1 c0 4 -3 8 -10 13Z" />
+            <path d="M11 13 H17 M14 10 V16" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Health Share vs ACA Comparison</h3>
+        <p class="bt-card-desc">Compare ACA health insurance to health share plans side by side. See your estimated monthly savings and get a PDF breakdown by coverage type.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 5 · FICA / Section 125 Tax Savings Calculator -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="4" width="16" height="20" rx="1.5" />
+            <path d="M10 9 L18 9 M10 13 H18 M10 17 H14" />
+            <circle cx="17" cy="18" r="1.5" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">FICA / Section 125 Tax Savings Calculator</h3>
+        <p class="bt-card-desc">See exactly how much your business could save on employer FICA taxes through a compliant Section 125 cafeteria plan. Get a detailed PDF breakdown.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 6 · Employee Benefits Optimizer -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10" cy="10" r="3.5" />
+            <path d="M4 22 c0 -3 3 -5.5 6 -5.5 s6 2.5 6 5.5" />
+            <path d="M18 13 l2 2 l4 -4" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Employee Benefits Optimizer</h3>
+        <p class="bt-card-desc">See how your benefits package compares to industry benchmarks. Get a coverage score, gap analysis, and top 3 improvements with estimated monthly cost and retention impact.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 7 · Payroll Cost Analyzer -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="7" width="22" height="14" rx="1.5" />
+            <circle cx="14" cy="14" r="3" />
+            <path d="M7 11 V17 M21 11 V17" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Payroll Cost Analyzer</h3>
+        <p class="bt-card-desc">See the true cost of your payroll including employer taxes, FICA, FUTA, and service fees. Get a full per-employee breakdown with a PDF report.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 8 · Cash Discount Processing Calculator -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="22" height="16" rx="2" />
+            <path d="M3 11 H25" />
+            <path d="M7 17 H12 M16 17 H21" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Cash Discount Processing Calculator</h3>
+        <p class="bt-card-desc">Find out exactly how much your business is losing to credit card processing fees. Calculate your savings under two proven strategies with a PDF report.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 9 · Business Insurance Coverage Audit -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 4 L23 7 V14 c0 5 -4 9 -9 10 c-5 -1 -9 -5 -9 -10 V7 L14 4Z" />
+            <path d="M10 14 L13 17 L18 11" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Business Insurance Coverage Audit</h3>
+        <p class="bt-card-desc">Find out exactly where your business may be overpaying or underinsured. Get a coverage score, gap analysis, priority risk flags, and estimated premium ranges.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 10 · Website & Online Presence Grader -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="14" cy="14" r="10" />
+            <path d="M4 14 H24" />
+            <path d="M14 4 c3 3 4.5 6 4.5 10 s-1.5 7 -4.5 10 c-3 -3 -4.5 -6 -4.5 -10 s1.5 -7 4.5 -10Z" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Website &amp; Online Presence Grader</h3>
+        <p class="bt-card-desc">Score your business across 6 areas — Google profile, website, reviews, SEO, social media, and local visibility. Get a PDF action plan showing exactly where you're losing customers online.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 11 · Google Review Impact Estimator -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 4 L17 10.5 L24 11.5 L19 16.5 L20.5 23.5 L14 20 L7.5 23.5 L9 16.5 L4 11.5 L11 10.5 Z" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Google Review Impact Estimator</h3>
+        <p class="bt-card-desc">Find out how much your current review profile is costing you in lost revenue. Get a revenue opportunity estimate and a 90-day action plan with a downloadable PDF.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 12 · Customer Lifetime Value Calculator -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="14" cy="9" r="4" />
+            <path d="M5 23 c0 -4.5 4 -8 9 -8 s9 3.5 9 8" />
+            <path d="M11 19 H17" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Customer Lifetime Value Calculator</h3>
+        <p class="bt-card-desc">Find out what your average customer is actually worth. Calculate your CLV, total customer base value, and see which lever — retention, frequency, or transaction value — moves the needle most.</p>
+        <a href="#" class="bt-card-btn">Launch Tool &rarr;</a>
+      </div>
+
+      <!-- 13 · Daily Deal Writer -->
+      <div class="bt-card">
+        <div class="bt-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 11.5 V16.5 H8.5 L19 22 V6 L8.5 11.5 Z" />
+            <path d="M22 9 Q25.5 14 22 19" />
+          </svg>
+        </div>
+        <h3 class="bt-card-title">Daily Deal Writer</h3>
+        <p class="bt-card-desc">Generate Facebook, Instagram, and Google Business posts from one deal description. Three polished posts in 30 seconds.</p>
+        <a href="https://daily-deal-writer.onrender.com" class="bt-card-btn" target="_blank" rel="noopener noreferrer">Launch Tool &rarr;</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CTA ─────────────────────────────────────────────────── -->
+  <section class="bt-cta" aria-label="Search the Vault">
+    <div class="bt-cta-inner">
+      <h2 class="bt-cta-h2">Need something <em>more personal?</em></h2>
+      <p class="bt-cta-sub">Ask the Vault AI a direct question about your specific situation. Get a personalized answer in seconds — no forms, no waiting.</p>
+      <a href="/" class="bt-cta-btn">
+        Ask the Vault
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+      <div class="bt-cta-note">Average member asks 4 questions their first week.</div>
+    </div>
+  </section>
+
+  <!-- ── Secondary Links ────────────────────────────────────── -->
+  <div class="bt-secondary" aria-label="More resources">
+    Browse by topic:
+    <a href="https://tms-guides.onrender.com" class="bt-secondary-link"
+       target="_blank" rel="noopener noreferrer">Explore the Resource Library</a>
+    <span class="bt-secondary-sep" aria-hidden="true">&middot;</span>
+    <a href="/dashboard" class="bt-secondary-link">Back to Dashboard</a>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 TMS Solutions Group</div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#" class="footer-link">Support</a>
+        <a href="#" class="footer-link">Contact</a>
+        <a href="/login" class="footer-link">Log Out</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const chip     = document.getElementById('memberChip');
+    const dropdown = document.getElementById('memberDropdown');
+    function openDropdown()  { chip.setAttribute('aria-expanded', 'true');  dropdown.classList.add('open'); }
+    function closeDropdown() { chip.setAttribute('aria-expanded', 'false'); dropdown.classList.remove('open'); }
+    chip.addEventListener('click', () =>
+      chip.getAttribute('aria-expanded') === 'true' ? closeDropdown() : openDropdown()
+    );
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+      if (e.key === 'Escape') closeDropdown();
+    });
+    document.addEventListener('click', e => { if (!chip.contains(e.target)) closeDropdown(); });
+  </script>
+
+</body>
+</html>
