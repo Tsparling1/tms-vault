@@ -109,6 +109,10 @@ app.get('/ai-strategy', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'ai-strategy.html'));
 });
 
+app.get('/operational-efficiency', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'operational-efficiency.html'));
+});
+
 // ── Catchall — serve frontend ───────────────────────────────────────────────
 app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

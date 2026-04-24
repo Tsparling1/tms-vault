@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operational Efficiency — TMS Vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    /* Operational Efficiency — page-specific. All tokens from styles.css. */
+
+    /* Cream page body, navy ink */
+    body { background: #FAF6EE; color: #1A2F5C; }
+
+    /* Utility bar — deep navy, cream text, "Est. MMXXIV" on right */
+    .oe-utility.utility-bar { background: #13244A; border-bottom: 1px solid rgba(250,246,238,0.14); }
+    .oe-utility .utility-text { color: rgba(250,246,238,0.92); }
+    .oe-utility-inner {
+      max-width: none;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 88px;
+    }
+    .oe-utility-est {
+      font-family: var(--font-sans);
+      font-size: 10.5px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(250,246,238,0.55);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* ── Breadcrumb — cream bg (unique to this pillar) ───────── */
+    .oe-breadcrumb {
+      background: #FAF6EE;
+      padding: 26px 88px 0;
+    }
+    .oe-breadcrumb-inner { max-width: 1440px; margin: 0 auto; }
+    .oe-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 12.5px;
+      letter-spacing: 0.02em;
+      font-family: var(--font-sans);
+      transition: opacity 0.15s;
+    }
+    .oe-back:hover { opacity: 0.7; }
+    .oe-back-arrow { font-size: 15px; line-height: 1; }
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .oe-hero { background: #FAF6EE; padding: 46px 88px 0; }
+    .oe-hero-inner { max-width: 1440px; margin: 0 auto; }
+
+    .oe-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+    .oe-eyebrow-line {
+      width: 36px;
+      height: 1px;
+      background: var(--gold);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .oe-eyebrow-pillar {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: rgba(26,47,92,0.45);
+      letter-spacing: 0.04em;
+      text-transform: none;
+      font-size: 13px;
+      margin-left: 6px;
+    }
+
+    .oe-h1 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: clamp(44px, 6.1vw, 88px);
+      line-height: 1.02;
+      letter-spacing: -0.018em;
+      color: var(--navy);
+      margin: 22px 0;
+      max-width: 1100px;
+    }
+    .oe-h1 em { font-style: italic; color: var(--gold); }
+
+    .oe-sub {
+      font-family: var(--font-sans);
+      font-size: clamp(15px, 1.32vw, 19px);
+      line-height: 1.55;
+      color: rgba(26,47,92,0.78);
+      max-width: 780px;
+      margin: 0;
+    }
+
+    /* Hero image — full-bleed with top/bottom fades */
+    .oe-hero-img-wrap {
+      margin: 48px -88px 0;
+      position: relative;
+      aspect-ratio: 3 / 1;
+      overflow: hidden;
+      background: #13244A;
+    }
+    .oe-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .oe-hero-fade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(19,36,74,0.25) 0%,
+        rgba(19,36,74,0) 18%,
+        rgba(19,36,74,0) 80%,
+        rgba(19,36,74,0.35) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* ── Six Systems section ─────────────────────────────────── */
+    .oe-systems { background: #FAF6EE; padding: 110px 88px 100px; }
+    .oe-systems-inner { max-width: 1440px; margin: 0 auto; }
+
+    /* Two-column heading row */
+    .oe-systems-hdr {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 64px;
+      align-items: end;
+      margin-bottom: 64px;
+    }
+    .oe-systems-h2 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: clamp(32px, 4vw, 58px);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      color: var(--navy);
+      margin: 0;
+    }
+    .oe-systems-h2 em { font-style: italic; color: var(--gold); }
+    .oe-systems-desc {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.55;
+      color: rgba(26,47,92,0.62);
+      max-width: 420px;
+      padding-left: 24px;
+      border-left: 1px solid rgba(26,47,92,0.18);
+      padding-bottom: 8px;
+    }
+
+    /* List */
+    .oe-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-top: 1px solid rgba(26,47,92,0.14);
+    }
+    .oe-item {
+      border-bottom: 1px solid rgba(26,47,92,0.14);
+      padding: 28px 0;
+      display: grid;
+      grid-template-columns: 88px 28px 1fr 32px;
+      gap: 24px;
+      align-items: start;
+      cursor: pointer;
+      position: relative;
+      background: transparent;
+      transition: background 180ms ease;
+    }
+    .oe-item:hover { background: rgba(201,168,76,0.06); }
+
+    /* Gold left accent bar — scales in on hover */
+    .oe-accent {
+      position: absolute;
+      left: -88px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--gold);
+      transform: scaleY(0);
+      transform-origin: center;
+      transition: transform 220ms ease;
+    }
+    .oe-item:hover .oe-accent { transform: scaleY(1); }
+
+    .oe-num {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 30px;
+      font-weight: 400;
+      color: rgba(26,47,92,0.45);
+      line-height: 1;
+      padding-top: 4px;
+      transition: color 200ms ease;
+    }
+    .oe-item:hover .oe-num { color: var(--gold); }
+
+    .oe-icon {
+      padding-top: 6px;
+      color: var(--gold);
+    }
+    .oe-icon svg {
+      width: 22px; height: 22px;
+      stroke: var(--gold);
+      fill: none;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .oe-content { min-width: 0; }
+    .oe-item-title {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: clamp(20px, 1.8vw, 26px);
+      line-height: 1.15;
+      letter-spacing: -0.005em;
+      color: var(--navy);
+      margin: 0 0 8px;
+    }
+    .oe-item-desc {
+      font-family: var(--font-sans);
+      font-size: 15.5px;
+      line-height: 1.6;
+      color: rgba(26,47,92,0.7);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Expandable tags — hidden by default, shown when .open */
+    .oe-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0;
+      transition: max-height 320ms ease, opacity 240ms ease, margin-top 240ms ease;
+    }
+    .oe-item.open .oe-tags {
+      max-height: 200px;
+      opacity: 1;
+      margin-top: 16px;
+    }
+    .oe-tag {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border: 1px solid rgba(26,47,92,0.2);
+      color: var(--navy);
+      background: rgba(250,246,238,0.6);
+    }
+
+    .oe-arrow {
+      align-self: center;
+      color: rgba(26,47,92,0.35);
+      font-size: 22px;
+      font-family: var(--font-serif);
+      transition: transform 220ms ease, color 200ms ease;
+      line-height: 1;
+    }
+    .oe-item:hover .oe-arrow {
+      color: var(--gold);
+      transform: translateX(4px);
+    }
+
+    /* ── CTA Band ────────────────────────────────────────────── */
+    .oe-cta {
+      background: var(--navy);
+      color: var(--cream);
+      padding: 96px 88px 104px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    /* Etched inner border */
+    .oe-cta::before {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border: 1px solid rgba(201,168,76,0.22);
+      pointer-events: none;
+    }
+    /* Four corner gold marks */
+    .oe-corner {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+    }
+    .oe-corner--tl { top: 24px; left: 24px; border-top: 1.5px solid var(--gold); border-left: 1.5px solid var(--gold); }
+    .oe-corner--tr { top: 24px; right: 24px; border-top: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); }
+    .oe-corner--bl { bottom: 24px; left: 24px; border-bottom: 1.5px solid var(--gold); border-left: 1.5px solid var(--gold); }
+    .oe-corner--br { bottom: 24px; right: 24px; border-bottom: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); }
+
+    .oe-cta-inner {
+      position: relative;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .oe-cta-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 11.5px;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .oe-cta-eyebrow-line {
+      width: 24px; height: 1px;
+      background: var(--gold);
+      display: inline-block;
+    }
+    .oe-cta-h2 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: clamp(30px, 3.75vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -0.012em;
+      margin: 0;
+      color: var(--cream);
+    }
+    .oe-cta-h2 em { font-style: italic; color: var(--gold); }
+    .oe-cta-sub {
+      font-family: var(--font-sans);
+      font-size: 17px;
+      line-height: 1.6;
+      color: rgba(250,246,238,0.78);
+      margin: 22px auto 36px;
+      max-width: 620px;
+    }
+    /* Square button */
+    .oe-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      padding: 18px 34px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .oe-cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 30px rgba(201,168,76,0.35);
+    }
+    .oe-cta-btn .arrow { font-size: 18px; }
+    .oe-cta-note {
+      margin-top: 24px;
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: rgba(250,246,238,0.55);
+      font-size: 13.5px;
+    }
+
+    /* ── Secondary links ─────────────────────────────────────── */
+    .oe-secondary {
+      background: #FAF6EE;
+      padding: 30px 88px;
+      border-bottom: 1px solid rgba(26,47,92,0.1);
+    }
+    .oe-secondary-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: rgba(26,47,92,0.7);
+    }
+    .oe-secondary-sep { margin: 0 14px; color: rgba(26,47,92,0.3); }
+    .oe-secondary-link {
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+      transition: color 0.15s;
+    }
+    .oe-secondary-link:hover { color: var(--gold); }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .oe-utility-inner { padding: 0 24px; }
+      .oe-utility-est { display: none; }
+      .oe-breadcrumb { padding: 16px 20px 0; }
+      .oe-hero { padding: 22px 20px 0; }
+      .oe-hero-img-wrap { margin: 24px -20px 0; aspect-ratio: 4 / 3; }
+      .oe-h1 { font-size: 44px; margin: 14px 0; }
+      .oe-sub { font-size: 15px; }
+      .oe-eyebrow-line { width: 22px; }
+      .oe-systems { padding: 40px 20px 36px; }
+      .oe-systems-hdr { grid-template-columns: 1fr; gap: 20px; margin-bottom: 28px; }
+      .oe-systems-desc { display: none; }
+      .oe-item { grid-template-columns: 40px 1fr 20px; gap: 14px; padding: 20px 0; }
+      .oe-icon { display: none; }
+      .oe-num { font-size: 22px; padding-top: 0; }
+      .oe-item-title { font-size: 20px; }
+      .oe-item-desc { font-size: 14px; }
+      .oe-arrow { font-size: 16px; }
+      .oe-accent { left: -20px; }
+      .oe-cta { padding: 48px 20px 52px; }
+      .oe-cta::before { inset: 14px; }
+      .oe-corner--tl { top: 14px; left: 14px; }
+      .oe-corner--tr { top: 14px; right: 14px; }
+      .oe-corner--bl { bottom: 14px; left: 14px; }
+      .oe-corner--br { bottom: 14px; right: 14px; }
+      .oe-cta-h2 { font-size: 30px; }
+      .oe-cta-sub { font-size: 14.5px; margin: 14px auto 28px; }
+      .oe-cta-btn { padding: 16px 26px; font-size: 14px; width: 100%; justify-content: center; }
+      .oe-cta-note { font-size: 12.5px; margin-top: 18px; }
+      .oe-secondary { padding: 24px 20px; }
+      .oe-secondary-inner { flex-direction: column; gap: 10px; font-size: 13px; }
+      .oe-secondary-sep { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Utility Bar ─────────────────────────────────────────── -->
+  <div class="utility-bar oe-utility">
+    <div class="oe-utility-inner">
+      <span class="utility-text">
+        <span class="utility-dot" aria-hidden="true"></span>
+        The Operations Partner Bundle
+        <span class="utility-dot" aria-hidden="true"></span>
+        Member Library
+      </span>
+    </div>
+  </div>
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <div class="brand-lockup">
+        <img src="/images/tms-vault-logo.png" alt="TMS Solutions" class="brand-logo" />
+      </div>
+
+      <div class="member-chip" id="memberChip" role="button"
+           aria-haspopup="true" aria-expanded="false" tabindex="0">
+        <div class="member-avatar">J</div>
+        <div class="member-info">
+          <span class="member-name">James Callahan</span>
+          <span class="member-badge">MEMBER</span>
+        </div>
+        <svg class="member-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="member-dropdown" id="memberDropdown" role="menu">
+          <a href="#" class="dropdown-item" role="menuitem">My Account</a>
+          <a href="/dashboard" class="dropdown-item" role="menuitem">Dashboard</a>
+          <a href="/login" class="dropdown-item dropdown-item--danger" role="menuitem">Log Out</a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── Breadcrumb — cream bg (unique to this pillar) ─────── -->
+  <nav class="oe-breadcrumb" aria-label="Breadcrumb">
+    <div class="oe-breadcrumb-inner">
+      <a href="/dashboard" class="oe-back">
+        <span class="oe-back-arrow">&larr;</span>
+        Back to Dashboard
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <section class="oe-hero">
+    <div class="oe-hero-inner">
+
+      <div class="oe-eyebrow">
+        <span class="oe-eyebrow-line" aria-hidden="true"></span>
+        Operational Efficiency
+      </div>
+
+      <h1 class="oe-h1">Run tighter. <em>Sleep easier.</em></h1>
+
+      <p class="oe-sub">
+        Payroll, HR, legal, and compliance are where small businesses quietly bleed time
+        and money. This pillar shows you how to run all of it lean, clean, and legally airtight.
+      </p>
+
+      <div class="oe-hero-img-wrap">
+        <img
+          src="/images/operational-efficiency-hero.png"
+          alt="Antique brass pocket watch movement with visible gears caught in warm light"
+          class="oe-hero-img"
+        />
+        <div class="oe-hero-fade" aria-hidden="true"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Six Systems ────────────────────────────────────────── -->
+  <section class="oe-systems" aria-label="Six systems">
+    <div class="oe-systems-inner">
+
+      <div class="oe-systems-hdr">
+        <h2 class="oe-systems-h2">
+          Six <em>systems</em> every working small business needs in place.
+        </h2>
+      </div>
+
+      <ol class="oe-list">
+
+        <!-- 01 · Payroll Optimization -->
+        <li class="oe-item">
+          <div class="oe-accent" aria-hidden="true"></div>
+          <span class="oe-num">01</span>
+          <div class="oe-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="6" width="18" height="12" rx="1.5"/>
+              <circle cx="12" cy="12" r="2.4"/>
+              <path d="M6 9v6M18 9v6"/>
+            </svg>
+          </div>
+          <div class="oe-content">
+            <h3 class="oe-item-title">Payroll Optimization</h3>
+            <p class="oe-item-desc">Most small businesses on ADP or Paychex can cut their payroll cost in half without losing a single feature.</p>
+            <div class="oe-tags" aria-hidden="true">
+              <span class="oe-tag">Playbook</span>
+              <span class="oe-tag">Templates</span>
+              <span class="oe-tag">Checklist</span>
+              <span class="oe-tag">Office Hours</span>
+            </div>
+          </div>
+          <div class="oe-arrow" aria-hidden="true">&rarr;</div>
+        </li>
+
+        <!-- 02 · Employee Benefits -->
+        <li class="oe-item">
+          <div class="oe-accent" aria-hidden="true"></div>
+          <span class="oe-num">02</span>
+          <div class="oe-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>
+            </svg>
+          </div>
+          <div class="oe-content">
+            <h3 class="oe-item-title">Employee Benefits</h3>
+            <p class="oe-item-desc">See how your benefits package compares to industry benchmarks. Find the gaps and the overpayments.</p>
+            <div class="oe-tags" aria-hidden="true">
+              <span class="oe-tag">Playbook</span>
+              <span class="oe-tag">Templates</span>
+              <span class="oe-tag">Checklist</span>
+              <span class="oe-tag">Office Hours</span>
+            </div>
+          </div>
+          <div class="oe-arrow" aria-hidden="true">&rarr;</div>
+        </li>
+
+        <!-- 03 · HR Documents -->
+        <li class="oe-item">
+          <div class="oe-accent" aria-hidden="true"></div>
+          <span class="oe-num">03</span>
+          <div class="oe-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 3h9l4 4v14H6z"/>
+              <path d="M14 3v5h5"/>
+              <path d="M9 13h7M9 17h5"/>
+            </svg>
+          </div>
+          <div class="oe-content">
+            <h3 class="oe-item-title">HR Documents &amp; Compliance</h3>
+            <p class="oe-item-desc">Employee handbooks, job descriptions, and compliance checklists — professionally prepared templates.</p>
+            <div class="oe-tags" aria-hidden="true">
+              <span class="oe-tag">Playbook</span>
+              <span class="oe-tag">Templates</span>
+              <span class="oe-tag">Checklist</span>
+              <span class="oe-tag">Office Hours</span>
+            </div>
+          </div>
+          <div class="oe-arrow" aria-hidden="true">&rarr;</div>
+        </li>
+
+        <!-- 04 · Business Legal -->
+        <li class="oe-item">
+          <div class="oe-accent" aria-hidden="true"></div>
+          <span class="oe-num">04</span>
+          <div class="oe-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3v18"/>
+              <path d="M5 8h14"/>
+              <path d="M8 8l-3 7a3 3 0 0 0 6 0z"/>
+              <path d="M16 8l-3 7a3 3 0 0 0 6 0z"/>
+            </svg>
+          </div>
+          <div class="oe-content">
+            <h3 class="oe-item-title">Business Legal Resources</h3>
+            <p class="oe-item-desc">Operating agreements, contracts, terms of service — everything a small business actually needs.</p>
+            <div class="oe-tags" aria-hidden="true">
+              <span class="oe-tag">Playbook</span>
+              <span class="oe-tag">Templates</span>
+              <span class="oe-tag">Checklist</span>
+              <span class="oe-tag">Office Hours</span>
+            </div>
+          </div>
+          <div class="oe-arrow" aria-hidden="true">&rarr;</div>
+        </li>
+
+        <!-- 05 · Cash Flow -->
+        <li class="oe-item">
+          <div class="oe-accent" aria-hidden="true"></div>
+          <span class="oe-num">05</span>
+          <div class="oe-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 17l5-5 4 3 8-8"/>
+              <path d="M15 7h5v5"/>
+            </svg>
+          </div>
+          <div class="oe-content">
+            <h3 class="oe-item-title">Cash Flow Management</h3>
+            <p class="oe-item-desc">Get a clear picture of where cash flow is strong, where it&rsquo;s leaking, and exactly what to fix first.</p>
+            <div class="oe-tags" aria-hidden="true">
+              <span class="oe-tag">Playbook</span>
+              <span class="oe-tag">Templates</span>
+              <span class="oe-tag">Checklist</span>
+              <span class="oe-tag">Office Hours</span>
+            </div>
+          </div>
+          <div class="oe-arrow" aria-hidden="true">&rarr;</div>
+        </li>
+
+        <!-- 06 · Business Savings Audit -->
+        <li class="oe-item">
+          <div class="oe-accent" aria-hidden="true"></div>
+          <span class="oe-num">06</span>
+          <div class="oe-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="6"/>
+              <path d="M20 20l-4.5-4.5"/>
+              <path d="M11 8v6M8 11h6"/>
+            </svg>
+          </div>
+          <div class="oe-content">
+            <h3 class="oe-item-title">Business Savings Audit</h3>
+            <p class="oe-item-desc">A full audit of where your business could be saving across every category.</p>
+            <div class="oe-tags" aria-hidden="true">
+              <span class="oe-tag">Playbook</span>
+              <span class="oe-tag">Templates</span>
+              <span class="oe-tag">Checklist</span>
+              <span class="oe-tag">Office Hours</span>
+            </div>
+          </div>
+          <div class="oe-arrow" aria-hidden="true">&rarr;</div>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── CTA Band ────────────────────────────────────────────── -->
+  <section class="oe-cta" aria-label="Search the Vault">
+    <!-- Etched corner marks -->
+    <div class="oe-corner oe-corner--tl" aria-hidden="true"></div>
+    <div class="oe-corner oe-corner--tr" aria-hidden="true"></div>
+    <div class="oe-corner oe-corner--bl" aria-hidden="true"></div>
+    <div class="oe-corner oe-corner--br" aria-hidden="true"></div>
+
+    <div class="oe-cta-inner">
+      <div class="oe-cta-eyebrow">
+        <span class="oe-cta-eyebrow-line" aria-hidden="true"></span>
+        Ask the Vault AI
+        <span class="oe-cta-eyebrow-line" aria-hidden="true"></span>
+      </div>
+      <h2 class="oe-cta-h2">Ready to <em>tighten</em> the ship?</h2>
+      <p class="oe-cta-sub">
+        Ask the Vault AI anything about payroll, HR, compliance, or cash flow.
+        Get a clear answer in seconds.
+      </p>
+      <a href="/" class="oe-cta-btn">
+        Search the Vault Now
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <div class="oe-cta-note">Average member asks 4 questions their first week.</div>
+    </div>
+  </section>
+
+  <!-- ── Secondary Links ────────────────────────────────────── -->
+  <div class="oe-secondary" aria-label="More resources">
+    <div class="oe-secondary-inner">
+      <span>Prefer to browse?</span>
+      <span class="oe-secondary-sep" aria-hidden="true">&middot;</span>
+      <a href="/tools" class="oe-secondary-link">Explore the Business Tools</a>
+      <span class="oe-secondary-sep" aria-hidden="true">&middot;</span>
+      <a href="https://tms-guides.onrender.com" class="oe-secondary-link"
+         target="_blank" rel="noopener noreferrer">Browse the Resource Library</a>
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 TMS Solutions Group</div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#" class="footer-link">Support</a>
+        <a href="#" class="footer-link">Contact</a>
+        <a href="/login" class="footer-link">Log Out</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    // Member chip dropdown
+    const chip     = document.getElementById('memberChip');
+    const dropdown = document.getElementById('memberDropdown');
+    function openDropdown()  { chip.setAttribute('aria-expanded', 'true');  dropdown.classList.add('open'); }
+    function closeDropdown() { chip.setAttribute('aria-expanded', 'false'); dropdown.classList.remove('open'); }
+    chip.addEventListener('click', () =>
+      chip.getAttribute('aria-expanded') === 'true' ? closeDropdown() : openDropdown()
+    );
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+      if (e.key === 'Escape') closeDropdown();
+    });
+    document.addEventListener('click', e => { if (!chip.contains(e.target)) closeDropdown(); });
+
+    // Expandable list rows
+    document.querySelectorAll('.oe-item').forEach(item => {
+      item.addEventListener('click', () => item.classList.toggle('open'));
+      item.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.classList.toggle('open'); }
+      });
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('role', 'button');
+    });
+  </script>
+
+</body>
+</html>
