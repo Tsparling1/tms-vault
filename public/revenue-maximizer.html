@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revenue Maximizer — TMS Vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    /* Revenue Maximizer — page-specific styles. All tokens from styles.css. */
+
+    /* Override body — cream page, navy ink */
+    body { background: #FAF6EE; color: #1a1a1a; }
+
+    /* Utility bar — dark navy bg + cream text for this pillar */
+    .rm-utility.utility-bar { background: #0f1f3e; }
+    .rm-utility .utility-text { color: rgba(250,246,238,0.85); }
+
+    /* ── Breadcrumb ──────────────────────────────────────────── */
+    .rm-breadcrumb {
+      background: var(--navy);
+      padding: 0 32px 22px;
+    }
+    .rm-breadcrumb-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .rm-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.18s;
+    }
+    .rm-back:hover { color: #e2c26a; }
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .rm-hero {
+      background: #FAF6EE;
+      padding: 88px 32px 56px;
+    }
+    .rm-hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .rm-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #a98b34;
+      font-weight: 600;
+      margin-bottom: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .rm-eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--gold);
+      display: block;
+    }
+    .rm-h1 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      color: var(--navy);
+      font-size: clamp(38px, 5.6vw, 78px);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      margin: 0 0 28px;
+      max-width: 18ch;
+    }
+    .rm-h1 em {
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 500;
+    }
+    .rm-sub {
+      font-family: var(--font-sans);
+      font-size: clamp(16px, 1.35vw, 19px);
+      line-height: 1.55;
+      color: #3a3a3a;
+      max-width: 62ch;
+      margin: 0;
+      font-weight: 400;
+    }
+    .rm-hero-img {
+      display: block;
+      width: 100%;
+      margin-top: 56px;
+      aspect-ratio: 1000 / 333;
+      object-fit: cover;
+      border-radius: 2px;
+      box-shadow: 0 22px 60px -28px rgba(26,47,92,0.35), 0 2px 0 rgba(26,47,92,0.05);
+    }
+
+    /* ── Six Doors section ───────────────────────────────────── */
+    .rm-section {
+      background: #FAF6EE;
+      padding: 96px 32px 104px;
+    }
+    .rm-section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .rm-section-h2 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      color: var(--navy);
+      font-size: clamp(32px, 4.2vw, 58px);
+      line-height: 1.08;
+      letter-spacing: -0.012em;
+      margin: 0 0 64px;
+      max-width: 20ch;
+    }
+    .rm-section-h2 em {
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .rm-doors {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(26,47,92,0.12);
+    }
+    .rm-door {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 40px;
+      padding: 36px 0;
+      border-bottom: 1px solid rgba(26,47,92,0.12);
+      align-items: start;
+      transition: background 0.2s;
+    }
+    .rm-door:hover { background: rgba(201,168,76,0.05); }
+    .rm-door-num {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 46px;
+      line-height: 1;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+      padding-top: 4px;
+    }
+    .rm-door-body {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .rm-door-icon {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      margin-top: 6px;
+    }
+    .rm-door-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--gold);
+      fill: none;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .rm-door-title {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      color: var(--navy);
+      font-size: clamp(22px, 2.1vw, 30px);
+      line-height: 1.18;
+      margin: 0 0 10px;
+      letter-spacing: -0.005em;
+    }
+    .rm-door-desc {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.55;
+      color: #3f3f3f;
+      margin: 0;
+      max-width: 58ch;
+    }
+
+    /* ── CTA Band ────────────────────────────────────────────── */
+    .rm-cta {
+      background: var(--navy);
+      color: var(--cream);
+      padding: 104px 32px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .rm-cta::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 85% 20%, rgba(201,168,76,0.08), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 10% 90%, rgba(201,168,76,0.05), transparent 70%);
+      pointer-events: none;
+    }
+    .rm-cta-inner {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .rm-cta-h2 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: clamp(34px, 4.4vw, 60px);
+      line-height: 1.1;
+      margin: 0 0 20px;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+    }
+    .rm-cta-h2 em {
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 500;
+    }
+    .rm-cta-sub {
+      font-family: var(--font-sans);
+      font-size: clamp(16px, 1.3vw, 18px);
+      line-height: 1.55;
+      color: rgba(250,246,238,0.82);
+      max-width: 58ch;
+      margin: 0 auto 40px;
+    }
+    /* Square button — no border-radius, per design */
+    .rm-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      padding: 18px 34px;
+      text-decoration: none;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+      box-shadow: 0 12px 28px -14px rgba(201,168,76,0.6);
+    }
+    .rm-cta-btn:hover {
+      background: #d4b35a;
+      transform: translateY(-1px);
+      box-shadow: 0 16px 34px -14px rgba(201,168,76,0.7);
+    }
+    .rm-cta-btn .arrow { transition: transform 0.18s; }
+    .rm-cta-btn:hover .arrow { transform: translateX(3px); }
+    .rm-cta-note {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 14px;
+      color: rgba(250,246,238,0.55);
+      margin-top: 26px;
+    }
+
+    /* ── Secondary links ─────────────────────────────────────── */
+    .rm-secondary {
+      background: #FAF6EE;
+      padding: 36px 32px;
+      border-bottom: 1px solid rgba(26,47,92,0.08);
+    }
+    .rm-secondary-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--navy);
+    }
+    .rm-secondary-label { color: #555; }
+    .rm-secondary-sep { color: var(--gold); }
+    .rm-secondary-link {
+      color: var(--navy);
+      border-bottom: 1px solid rgba(26,47,92,0.25);
+      padding-bottom: 2px;
+      transition: border-color 0.18s, color 0.18s;
+    }
+    .rm-secondary-link:hover {
+      color: #a98b34;
+      border-color: var(--gold);
+    }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .rm-hero { padding: 48px 22px 36px; }
+      .rm-eyebrow { margin-bottom: 20px; font-size: 11px; letter-spacing: 0.22em; }
+      .rm-h1 { font-size: 40px; margin-bottom: 22px; }
+      .rm-hero-img { margin-top: 36px; aspect-ratio: 1000 / 450; }
+      .rm-section { padding: 64px 22px 72px; }
+      .rm-section-h2 { font-size: 32px; margin-bottom: 40px; }
+      .rm-door { grid-template-columns: 1fr; gap: 14px; padding: 28px 0; }
+      .rm-door-num { font-size: 32px; padding-top: 0; }
+      .rm-door-body { grid-template-columns: 26px 1fr; gap: 16px; }
+      .rm-door-icon { width: 26px; height: 26px; margin-top: 3px; }
+      .rm-door-icon svg { width: 22px; height: 22px; }
+      .rm-door-title { font-size: 22px; }
+      .rm-door-desc { font-size: 15px; }
+      .rm-cta { padding: 64px 22px; }
+      .rm-cta-h2 { font-size: 34px; }
+      .rm-cta-sub { font-size: 15px; margin-bottom: 30px; }
+      .rm-cta-btn { padding: 16px 26px; font-size: 14px; }
+      .rm-secondary { padding: 26px 22px; }
+      .rm-secondary-inner { font-size: 12px; gap: 10px; flex-direction: column; }
+      .rm-secondary-sep { display: none; }
+      .rm-breadcrumb { padding: 0 22px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Utility Bar ─────────────────────────────────────────── -->
+  <div class="utility-bar rm-utility">
+    <span class="utility-text">
+      <span class="utility-dot" aria-hidden="true"></span>
+      The Operations Partner Bundle
+      <span class="utility-dot" aria-hidden="true"></span>
+      Member Library
+    </span>
+  </div>
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <div class="brand-lockup">
+        <img src="/images/tms-vault-logo.png" alt="TMS Solutions" class="brand-logo" />
+      </div>
+
+      <div class="member-chip" id="memberChip" role="button"
+           aria-haspopup="true" aria-expanded="false" tabindex="0">
+        <div class="member-avatar">J</div>
+        <div class="member-info">
+          <span class="member-name">James Callahan</span>
+          <span class="member-badge">MEMBER</span>
+        </div>
+        <svg class="member-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="member-dropdown" id="memberDropdown" role="menu">
+          <a href="#" class="dropdown-item" role="menuitem">My Account</a>
+          <a href="/dashboard" class="dropdown-item" role="menuitem">Dashboard</a>
+          <a href="/login" class="dropdown-item dropdown-item--danger" role="menuitem">Log Out</a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── Breadcrumb ──────────────────────────────────────────── -->
+  <nav class="rm-breadcrumb" aria-label="Breadcrumb">
+    <div class="rm-breadcrumb-inner">
+      <a href="/dashboard" class="rm-back">&larr; Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <section class="rm-hero">
+    <div class="rm-hero-inner">
+
+      <div class="rm-eyebrow">Revenue Maximizer</div>
+
+      <h1 class="rm-h1">
+        The money is <em>already out there.</em>
+      </h1>
+
+      <p class="rm-sub">
+        Capital, grants, funding programs, and customers waiting to come back. This pillar
+        shows you exactly where the money lives &mdash; and how to get your hands on it.
+      </p>
+
+      <img
+        src="/images/revenue-maximizer-hero.png"
+        alt="A brass key resting on folded documents with a warm gold doorway glow."
+        class="rm-hero-img"
+      />
+
+    </div>
+  </section>
+
+  <!-- ── Six Doors ──────────────────────────────────────────── -->
+  <section class="rm-section" aria-label="Six doors">
+    <div class="rm-section-inner">
+
+      <h2 class="rm-section-h2">
+        Six <em>doors</em> your business hasn&rsquo;t opened yet.
+      </h2>
+
+      <div class="rm-doors">
+
+        <!-- 01 · SBA Loans -->
+        <article class="rm-door">
+          <div class="rm-door-num">01</div>
+          <div class="rm-door-body">
+            <div class="rm-door-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M3 10.5 12 5l9 5.5"/>
+                <path d="M5 10.5V18"/>
+                <path d="M9 10.5V18"/>
+                <path d="M15 10.5V18"/>
+                <path d="M19 10.5V18"/>
+                <path d="M3 20.5h18"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="rm-door-title">SBA Loans That Actually Close</h3>
+              <p class="rm-door-desc">Working capital, equipment, and real estate financing up to $5M with lower rates than conventional loans.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 02 · Florida Grants -->
+        <article class="rm-door">
+          <div class="rm-door-num">02</div>
+          <div class="rm-door-body">
+            <div class="rm-door-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 3h8l5 5v13H6z"/>
+                <path d="M14 3v5h5"/>
+                <path d="m12 12 1 2 2 .3-1.5 1.4.4 2-1.9-1-1.9 1 .4-2L9.5 14.3l2-.3z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="rm-door-title">Florida State Grant Programs</h3>
+              <p class="rm-door-desc">State-level grants and programs for Florida small businesses, updated regularly as new programs open.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 03 · Fast Funding -->
+        <article class="rm-door">
+          <div class="rm-door-num">03</div>
+          <div class="rm-door-body">
+            <div class="rm-door-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M13 3 5 14h6l-1 7 8-11h-6z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="rm-door-title">Fast Business Funding</h3>
+              <p class="rm-door-desc">Revenue-based approval up to $500K. Most businesses qualify in 24 hours, not 24 weeks.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 04 · WOTC -->
+        <article class="rm-door">
+          <div class="rm-door-num">04</div>
+          <div class="rm-door-body">
+            <div class="rm-door-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5L6 21z"/>
+                <path d="m10 14 4-4"/>
+                <circle cx="10.5" cy="10.5" r="1.1"/>
+                <circle cx="13.5" cy="13.5" r="1.1"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="rm-door-title">WOTC Tax Credits</h3>
+              <p class="rm-door-desc">Up to $9,600 per qualifying new hire. Most businesses don&rsquo;t know they qualify.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 05 · Government Contracting -->
+        <article class="rm-door">
+          <div class="rm-door-num">05</div>
+          <div class="rm-door-body">
+            <div class="rm-door-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 21V8l8-4 8 4v13"/>
+                <path d="M4 21h16"/>
+                <path d="M10 21v-6h4v6"/>
+                <path d="M12 4V2"/>
+                <path d="M12 2h4v2h-4"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="rm-door-title">Government Contracting</h3>
+              <p class="rm-door-desc">Register on SAM.gov and access federal and state contract opportunities built for small businesses.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 06 · Customer Reactivation -->
+        <article class="rm-door">
+          <div class="rm-door-num">06</div>
+          <div class="rm-door-body">
+            <div class="rm-door-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M20 12a8 8 0 1 1-2.3-5.6"/>
+                <path d="M20 4v4h-4"/>
+                <circle cx="12" cy="13" r="2"/>
+                <path d="M8 18c.6-1.7 2.2-2.8 4-2.8s3.4 1.1 4 2.8"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="rm-door-title">Customer Reactivation</h3>
+              <p class="rm-door-desc">Bring back lost customers with automated campaigns. Often the fastest revenue a business can generate.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA Band ────────────────────────────────────────────── -->
+  <section class="rm-cta" aria-label="Search the Vault">
+    <div class="rm-cta-inner">
+      <h2 class="rm-cta-h2">Ready to find <em>your</em> funding?</h2>
+      <p class="rm-cta-sub">Ask the Vault AI anything about capital, grants, or funding. Get a personalized answer in seconds.</p>
+      <a href="/" class="rm-cta-btn">
+        Search the Vault Now
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <div class="rm-cta-note">Average member asks 4 questions their first week.</div>
+    </div>
+  </section>
+
+  <!-- ── Secondary Links ────────────────────────────────────── -->
+  <div class="rm-secondary" aria-label="More resources">
+    <div class="rm-secondary-inner">
+      <span class="rm-secondary-label">Prefer to browse?</span>
+      <a href="/tools" class="rm-secondary-link">Explore the Business Tools</a>
+      <span class="rm-secondary-sep" aria-hidden="true">&middot;</span>
+      <a href="https://tms-guides.onrender.com" class="rm-secondary-link"
+         target="_blank" rel="noopener noreferrer">Browse the Resource Library</a>
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 TMS Solutions Group</div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#" class="footer-link">Support</a>
+        <a href="#" class="footer-link">Contact</a>
+        <a href="/login" class="footer-link">Log Out</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const chip     = document.getElementById('memberChip');
+    const dropdown = document.getElementById('memberDropdown');
+    function openDropdown()  { chip.setAttribute('aria-expanded', 'true');  dropdown.classList.add('open'); }
+    function closeDropdown() { chip.setAttribute('aria-expanded', 'false'); dropdown.classList.remove('open'); }
+    chip.addEventListener('click', () =>
+      chip.getAttribute('aria-expanded') === 'true' ? closeDropdown() : openDropdown()
+    );
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+      if (e.key === 'Escape') closeDropdown();
+    });
+    document.addEventListener('click', e => { if (!chip.contains(e.target)) closeDropdown(); });
+  </script>
+
+</body>
+</html>
