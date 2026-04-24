@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weekly Vault Updates — TMS Vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    /* Weekly Vault Updates — page-specific. All base tokens from styles.css. */
+
+    body { background: #FAF6EE; color: #1A2F5C; }
+
+    /* Utility bar */
+    .wu-utility.utility-bar { background: #15264A; }
+    .wu-utility .utility-text { color: rgba(250,246,238,0.9); }
+
+    /* ── Breadcrumb ───────────────────────────────────────────── */
+    .wu-breadcrumb {
+      background: #FAF6EE;
+      padding: 22px 40px 0;
+    }
+    .wu-breadcrumb-inner { max-width: 1100px; margin: 0 auto; }
+    .wu-back {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.15s;
+    }
+    .wu-back:hover { color: var(--navy); }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .wu-hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 72px 40px 0;
+      text-align: center;
+    }
+    .wu-label {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-variant: small-caps;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .wu-h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(38px, 6vw, 62px);
+      font-weight: 400;
+      color: #1A2F5C;
+      line-height: 1.1;
+      margin: 0 0 22px;
+    }
+    .wu-sub {
+      font-family: var(--font-sans);
+      font-size: clamp(15px, 2vw, 18px);
+      color: #5A6B8A;
+      line-height: 1.65;
+      max-width: 620px;
+      margin: 0 auto 36px;
+    }
+    .wu-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #1A2F5C;
+      background: var(--gold);
+      border-radius: 4px;
+      padding: 16px 30px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .wu-btn:hover { background: var(--gold-hover); }
+
+    /* ── Hero image ───────────────────────────────────────────── */
+    .wu-img-outer {
+      max-width: 1100px;
+      margin: 56px auto 0;
+      padding: 0 40px;
+    }
+    .wu-img-wrap {
+      border-radius: 8px;
+      overflow: hidden;
+      background: #0a1428;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.14);
+    }
+    .wu-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Footer gap ───────────────────────────────────────────── */
+    .wu-spacer { height: 96px; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .wu-hero { padding: 48px 20px 0; }
+      .wu-img-outer { padding: 0 16px; margin-top: 40px; }
+      .wu-btn { font-size: 12.5px; padding: 14px 24px; }
+      .wu-spacer { height: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Utility Bar ─────────────────────────────────────────── -->
+  <div class="utility-bar wu-utility">
+    <span class="utility-text">
+      <span class="utility-dot" aria-hidden="true"></span>
+      The Operations Partner Bundle
+      <span class="utility-dot" aria-hidden="true"></span>
+      Member Library
+    </span>
+  </div>
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <div class="brand-lockup">
+        <img src="/images/tms-vault-logo.png" alt="TMS Solutions" class="brand-logo" />
+      </div>
+
+      <div class="member-chip" id="memberChip" role="button"
+           aria-haspopup="true" aria-expanded="false" tabindex="0">
+        <div class="member-avatar">J</div>
+        <div class="member-info">
+          <span class="member-name">James Callahan</span>
+          <span class="member-badge">MEMBER</span>
+        </div>
+        <svg class="member-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="member-dropdown" id="memberDropdown" role="menu">
+          <a href="#" class="dropdown-item" role="menuitem">My Account</a>
+          <a href="/dashboard" class="dropdown-item" role="menuitem">Dashboard</a>
+          <a href="/login" class="dropdown-item dropdown-item--danger" role="menuitem">Log Out</a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── Breadcrumb ─────────────────────────────────────────── -->
+  <nav class="wu-breadcrumb" aria-label="Breadcrumb">
+    <div class="wu-breadcrumb-inner">
+      <a href="/dashboard" class="wu-back">&larr; Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <section class="wu-hero">
+    <div class="wu-label">Weekly Vault Updates</div>
+    <h1 class="wu-h1">Stay ahead of what matters.</h1>
+    <p class="wu-sub">New resources, funding updates, and tools added every week &mdash; exclusively for TMS members.</p>
+    <a href="/" class="wu-btn">Search the Vault &rarr;</a>
+  </section>
+
+  <!-- ── Hero image ─────────────────────────────────────────── -->
+  <div class="wu-img-outer">
+    <div class="wu-img-wrap">
+      <img src="/images/weekly-updates-hero.png"
+           alt="Weekly updates — fresh resources for TMS members"
+           class="wu-img" />
+    </div>
+  </div>
+
+  <div class="wu-spacer"></div>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 TMS Solutions Group</div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#" class="footer-link">Support</a>
+        <a href="#" class="footer-link">Contact</a>
+        <a href="/login" class="footer-link">Log Out</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const chip     = document.getElementById('memberChip');
+    const dropdown = document.getElementById('memberDropdown');
+    function openDropdown()  { chip.setAttribute('aria-expanded', 'true');  dropdown.classList.add('open'); }
+    function closeDropdown() { chip.setAttribute('aria-expanded', 'false'); dropdown.classList.remove('open'); }
+    chip.addEventListener('click', () =>
+      chip.getAttribute('aria-expanded') === 'true' ? closeDropdown() : openDropdown()
+    );
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+      if (e.key === 'Escape') closeDropdown();
+    });
+    document.addEventListener('click', e => { if (!chip.contains(e.target)) closeDropdown(); });
+  </script>
+
+</body>
+</html>

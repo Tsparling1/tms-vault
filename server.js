@@ -121,6 +121,10 @@ app.get('/tools', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'tools.html'));
 });
 
+app.get('/weekly-vault-updates', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'weekly-vault-updates.html'));
+});
+
 // ── Catchall — serve frontend ───────────────────────────────────────────────
 app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
