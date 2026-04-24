@@ -97,6 +97,10 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
+app.get('/overhead-optimizer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'overhead-optimizer.html'));
+});
+
 // ── Catchall — serve frontend ───────────────────────────────────────────────
 app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
