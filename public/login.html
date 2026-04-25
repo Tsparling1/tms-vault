@@ -338,6 +338,19 @@
   </footer>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // If already authenticated, skip the login page entirely
+  (async function () {
+    const sb = window.supabase.createClient(
+      'https://wdwdbdbbcuxbfceulwim.supabase.co',
+      'sb_publishable_7yDTX_g2Yn8YC7UXDS4FPQ_ka4Q23oy'
+    );
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) window.location.replace('/dashboard');
+  })();
+</script>
+
 <script>
   const emailInput = document.getElementById('emailInput');
   const submitBtn  = document.getElementById('submitBtn');

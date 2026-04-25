@@ -1,23 +1,7 @@
 /* ── TMS Vault — Frontend App ──────────────────────────────── */
 
-// ── Member state (populated from Supabase session or stub) ──
-const member = {
-  name: window.__MEMBER_NAME__ || 'Marcus Delgado',
-  businessType: window.__MEMBER_BUSINESS_TYPE__ || null
-};
-
-// ── Seed member chip ────────────────────────────────────────
-(function initMemberChip() {
-  const nameEl = document.getElementById('memberName');
-  const avatarEl = document.getElementById('memberAvatar');
-  if (!nameEl || !avatarEl) return;
-  nameEl.textContent = member.name;
-  // Use first letter of first name
-  const initial = member.name.trim().charAt(0).toUpperCase();
-  avatarEl.textContent = initial;
-})();
-
-// ── Member chip dropdown ─────────────────────────────────────
+// Member chip dropdown
+// (Member name / avatar / logout are handled by auth.js which runs before this file)
 (function initDropdown() {
   const chip = document.getElementById('memberChip');
   const dropdown = document.getElementById('memberDropdown');
@@ -40,22 +24,9 @@ const member = {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     if (e.key === 'Escape') close();
   });
-
-  // Close on outside click
   document.addEventListener('click', (e) => {
     if (!chip.contains(e.target)) close();
   });
-
-  // Log Out links
-  const logoutLink = document.getElementById('logoutLink');
-  const footerLogout = document.getElementById('footerLogout');
-  function doLogout(e) {
-    e.preventDefault();
-    // Clear any stored session then redirect to root (Supabase signOut wired later)
-    window.location.href = '/logout';
-  }
-  if (logoutLink) logoutLink.addEventListener('click', doLogout);
-  if (footerLogout) footerLogout.addEventListener('click', doLogout);
 })();
 
 // ── Pills — autofill and submit ──────────────────────────────
@@ -188,6 +159,9 @@ async function runSearch(query) {
   let rawText = '';
 
   try {
+    // Read member from auth.js global (set after session resolves)
+    const member = window.__VAULT_MEMBER || {};
+
     const response = await fetch('/api/search', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

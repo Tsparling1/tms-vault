@@ -63,14 +63,52 @@ app.post('/api/search', searchLimiter, async (req, res) => {
 /**
  * POST /api/login-request
  * Body: { email: string }
- * Returns: { success: true }
+ * 1. Validates the email exists in the members table (service-role client).
+ * 2. Sends a Supabase magic-link OTP to that address.
+ * Returns: { success: true } | { error: string }
  */
-app.post('/api/login-request', (req, res) => {
-  const { email } = req.body;
-  if (!email || typeof email !== 'string' || !email.trim()) {
+const loginLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many login attempts. Please wait a minute and try again.' }
+});
+
+app.post('/api/login-request', loginLimiter, async (req, res) => {
+  const email = (typeof req.body?.email === 'string' ? req.body.email : '').trim().toLowerCase();
+
+  if (!email || !email.includes('@')) {
     return res.status(400).json({ error: 'Email is required.' });
   }
-  // Stub — magic link delivery will be wired here
+
+  const { supabaseAdmin, supabaseAnon } = require('./src/supabase-admin');
+
+  // Gate: only pre-registered members may receive a magic link
+  const { data: member } = await supabaseAdmin
+    .from('members')
+    .select('id')
+    .eq('email', email)
+    .maybeSingle();
+
+  if (!member) {
+    return res.status(403).json({
+      error: "We don't have a membership on file for that email. Please contact TMS."
+    });
+  }
+
+  const siteUrl = process.env.SITE_URL || 'http://localhost:3099';
+
+  const { error: otpError } = await supabaseAnon.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: `${siteUrl}/dashboard` }
+  });
+
+  if (otpError) {
+    console.error('[login-request] OTP error:', otpError.message);
+    return res.status(500).json({ error: 'Failed to send login link. Please try again.' });
+  }
+
   res.json({ success: true });
 });
 

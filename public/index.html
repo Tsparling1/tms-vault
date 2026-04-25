@@ -50,7 +50,7 @@
           <a href="#" class="dropdown-item" role="menuitem">My Account</a>
           <a href="#" class="dropdown-item" role="menuitem">Saved Resources</a>
           <a href="#" class="dropdown-item" role="menuitem">Book Advisor Call</a>
-          <a href="#" class="dropdown-item dropdown-item--danger" role="menuitem" id="logoutLink">Log Out</a>
+          <a href="/login" class="dropdown-item dropdown-item--danger" role="menuitem">Log Out</a>
         </div>
       </div>
 
@@ -123,11 +123,13 @@
       <nav class="footer-nav" aria-label="Footer">
         <a href="#" class="footer-link">Support</a>
         <a href="#" class="footer-link">Contact</a>
-        <a href="#" class="footer-link" id="footerLogout">Log Out</a>
+        <a href="/login" class="footer-link">Log Out</a>
       </nav>
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/auth.js"></script>
   <script src="/js/app.js"></script>
 </body>
 </html>
