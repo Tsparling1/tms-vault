@@ -3,3 +3,14 @@ node_modules/
 .env.local
 *.log
 .DS_Store
+.env.*
+node_modules
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+.session_secret
+*.bak
+*.bak.*
+__pycache__
