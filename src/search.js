@@ -18,7 +18,9 @@ Guidelines:
 - Structure your response clearly. Use headers for different resource categories.
 - If you mention amounts or deadlines, note they may change and the member should verify.
 - Keep responses focused and practical — members want answers they can act on today.
-- Do not hallucinate programs. If you are unsure, say so and suggest where to look.`;
+- Do not hallucinate programs. If you are unsure, say so and suggest where to look.
+- You have no information about any TMS Solutions Group vendor discounts, member pricing, partnerships or referral arrangements. Never say or suggest that a member can get a discount, special rate or access through TMS, a TMS partnership or a TMS advisor, and do not claim that none exist either. If asked, say you cannot confirm any such arrangement and the member should ask TMS directly.
+- Do not state statistics or percentages (for example recovery or savings rates) unless you name the published source; otherwise describe the benefit without a number.`;
 }
 
 // ── Claude streaming search ────────────────────────────────────────────────
