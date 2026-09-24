@@ -8,6 +8,11 @@ const { handleSearch } = require('./src/search');
 const { resendMailer, sendLoginLink, requireMember } = require('./src/member-access');
 
 const app = express();
+// Behind nginx on this server: trust that one hop only, so each visitor gets their own
+// rate-limit bucket (without this every visitor shares 127.0.0.1 and five sign-in
+// requests from anyone lock out everyone). Pair with the nginx vhost setting
+// X-Forwarded-For to $remote_addr after Cloudflare real-IP (see the Solutions runbook).
+app.set("trust proxy", "loopback");
 const PORT = process.env.PORT || 3099;
 
 // ── Middleware ──────────────────────────────────────────────────────────────
