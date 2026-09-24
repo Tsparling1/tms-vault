@@ -99,9 +99,32 @@ app.post('/api/login-request', loginLimiter, async (req, res) => {
 
   const siteUrl = process.env.SITE_URL || 'http://localhost:3099';
 
+  // Sign-ups are disabled on the Supabase project, so only members may sign in.
+  // A member added to the members table has no auth user yet, and signInWithOtp
+  // would refuse them ("Signups not allowed for this instance"). Create the auth
+  // user here with the service role; an existing one is left as it is.
+  const created = await supabaseAdmin.auth.admin.createUser({ email, email_confirm: true });
+  if (created.error && !/already (been )?registered|already exists/i.test(created.error.message)) {
+    console.error("[login-request] member login could not be prepared:", created.error.message);
+    return res.status(500).json({ error: "Failed to send login link. Please try again." });
+  }
+  if (created.error) {
+    // An existing auth user that was never confirmed is treated as a sign-up
+    // too. The members table already vouches for this address: confirm it.
+    for (let page = 1; page <= 10; page++) {
+      const { data: list } = await supabaseAdmin.auth.admin.listUsers({ page, perPage: 1000 });
+      const user = (list?.users || []).find((u) => (u.email || "").toLowerCase() === email);
+      if (user) {
+        if (!user.email_confirmed_at) await supabaseAdmin.auth.admin.updateUserById(user.id, { email_confirm: true });
+        break;
+      }
+      if (!list || list.users.length < 1000) break;
+    }
+  }
+
   const { error: otpError } = await supabaseAnon.auth.signInWithOtp({
     email,
-    options: { emailRedirectTo: `${siteUrl}/dashboard` }
+    options: { shouldCreateUser: false, emailRedirectTo: `${siteUrl}/dashboard` }
   });
 
   if (otpError) {
