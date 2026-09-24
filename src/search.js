@@ -85,4 +85,4 @@ async function handleSearch(query, member, send) {
   }
 }
 
-module.exports = { handleSearch };
+module.exports = { handleSearch, buildSystemPrompt };

@@ -37,6 +37,13 @@
     .eq('email', session.user.email)
     .maybeSingle();
 
+  // A signed-in address that is no longer a member (closed) is signed out.
+  if (!profile) {
+    await sb.auth.signOut();
+    window.location.replace('/login');
+    return;
+  }
+
   const firstName = profile?.first_name || '';
   const lastName  = profile?.last_name  || '';
   const fullName  = [firstName, lastName].filter(Boolean).join(' ') || session.user.email;
@@ -50,6 +57,8 @@
 
   // ── Expose to app.js search context ──────────────────────────
   window.__VAULT_MEMBER = { name: fullName, email: session.user.email };
+  // Search is members-only on the server: it needs the current session token.
+  window.__VAULT_TOKEN = async () => (await sb.auth.getSession()).data.session?.access_token || '';
 
   // ── Wire logout ───────────────────────────────────────────────
   // Intercepts every <a href="/login"> and performs a proper Supabase signOut

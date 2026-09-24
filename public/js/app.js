@@ -162,9 +162,10 @@ async function runSearch(query) {
     // Read member from auth.js global (set after session resolves)
     const member = window.__VAULT_MEMBER || {};
 
+    const token = window.__VAULT_TOKEN ? await window.__VAULT_TOKEN() : '';
     const response = await fetch('/api/search', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
       body: JSON.stringify({ query, member }),
       signal: activeController.signal
     });

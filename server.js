@@ -5,6 +5,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 const { handleSearch } = require('./src/search');
+const { resendMailer, sendLoginLink, requireMember } = require('./src/member-access');
 
 const app = express();
 const PORT = process.env.PORT || 3099;
@@ -31,8 +32,13 @@ const searchLimiter = rateLimit({
  * Body: { query: string, member: { name: string, businessType?: string } }
  * Streams: text/event-stream — data: { chunk: string } | data: { done: true } | data: { error: string }
  */
-app.post('/api/search', searchLimiter, async (req, res) => {
-  const { query, member } = req.body;
+// Members only: a current session AND a current members row, checked on every search.
+const memberOnly = (req, res, next) => requireMember(require('./src/supabase-admin').supabaseAdmin)(req, res, next);
+
+app.post('/api/search', searchLimiter, memberOnly, async (req, res) => {
+  const { query } = req.body;
+  // The member's name comes from the members table, never from the request body.
+  const member = req.member;
 
   if (!query || typeof query !== 'string' || query.trim().length === 0) {
     return res.status(400).json({ error: 'Query is required.' });
@@ -120,6 +126,19 @@ app.post('/api/login-request', loginLimiter, async (req, res) => {
       }
       if (!list || list.users.length < 1000) break;
     }
+  }
+
+  // The link is emailed through TMS's own Resend sender, so every sign-in email has
+  // a provider id and delivery events. Without that key, Supabase's mailer is used.
+  const mailer = resendMailer(process.env.VAULT_RESEND_KEY, process.env.VAULT_MAIL_FROM);
+  if (mailer.configured()) {
+    try {
+      await sendLoginLink({ supabaseAdmin, mailer, email, siteUrl });
+    } catch (e) {
+      console.error('[login-request] sign-in email failed:', e.message);
+      return res.status(500).json({ error: 'Failed to send login link. Please try again.' });
+    }
+    return res.json({ success: true });
   }
 
   const { error: otpError } = await supabaseAnon.auth.signInWithOtp({
